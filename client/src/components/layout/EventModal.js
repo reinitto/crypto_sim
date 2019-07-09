@@ -1,30 +1,28 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
+import { removeQuest, removeEvent } from '../../actions/eventActions';
 
-const EventModal = ({ events, quests }) => {
-  const [event, setEvents] = useState([]);
-  const [quest, setQuests] = useState([]);
+export const EventModal = ({
+  events = [],
+  quests = [],
+  removeQuest,
+  removeEvent
+}) => {
+  const messages = events.concat(quests);
 
-  useEffect(() => {
-    setEvents(events);
-    setQuests(quests);
-  }, [events, quests]);
-
-  const messages = event.concat(quest);
-
-  //   let instance = M.Modal.getInstance(
-  //     document.getElementById(`event-modal`).children[0]
-  //   );
-
-  const dismissEvent = id => {
-    let newEvents = event.filter(e => e.id !== id);
-    let newQuests = quest.filter(e => e.id !== id);
-    setEvents(newEvents);
-    setQuests(newQuests);
+  const dismissEventById = id => {
+    console.log(id);
+    removeQuest(id);
+    removeEvent(id);
   };
   const createEvent = e => {
     return (
-      <div key={e.id} id={e.id} style={{ background: 'teal', opacity: '0.75' }}>
+      <div
+        key={e.id}
+        id={e.id}
+        style={{ background: 'teal', opacity: '0.75' }}
+        data-test='modal-event'
+      >
         <div className='modal-content'>
           <h4>New Event</h4>
           <p>{e.message}</p>
@@ -33,7 +31,7 @@ const EventModal = ({ events, quests }) => {
         </div>
         <div className='modal-footer'>
           <button
-            onClick={() => dismissEvent(e.id)}
+            onClick={() => dismissEventById(e.id)}
             className='modal-close waves-effect waves-green btn-flat'
           >
             Agree
@@ -43,47 +41,6 @@ const EventModal = ({ events, quests }) => {
     );
   };
 
-  //   const eventContent =
-  //     event.length > 0 &&
-  //     event.map(e => (
-  //       <div key={e.id} id={e.id} className='modal'>
-  //         <div className='modal-content'>
-  //           <h4>New Event</h4>
-  //           <p>{e.message}</p>
-  //           {e.details.cost}
-  //           {e.id}
-  //         </div>
-  //         <div className='modal-footer'>
-  //           <button
-  //             onClick={() => dismissEvent(e.id)}
-  //             className='modal-close waves-effect waves-green btn-flat'
-  //           >
-  //             Agree
-  //           </button>
-  //         </div>
-  //       </div>
-  //     ));
-
-  //   const questContent =
-  //     quest.length > 0 &&
-  //     quest.map(q => (
-  //       <div key={q.id} id={q.id} className='modal'>
-  //         <div className='modal-content'>
-  //           <h4>New Event</h4>
-  //           <p>{q.message}</p>
-  //           {q.details.cost}
-  //           {q.id}
-  //         </div>
-  //         <div className='modal-footer'>
-  //           <button
-  //             onClick={() => dismissEvent(q.id)}
-  //             className='modal-close waves-effect waves-green btn-flat'
-  //           >
-  //             Agree
-  //           </button>
-  //         </div>
-  //       </div>
-  //     ));
   let content;
   if (messages.length > 0) {
     content = messages.map(m => createEvent(m));
@@ -92,6 +49,7 @@ const EventModal = ({ events, quests }) => {
   return (
     <div
       id='event-modal'
+      data-test='component-eventModal'
       /// that style doesnt work
       style={{ position: 'fixed', top: '35%', left: '10%' }}
     >
@@ -105,4 +63,7 @@ const mapStateToProps = ({ events: { events, quests } }) => ({
   quests
 });
 
-export default connect(mapStateToProps)(EventModal);
+export default connect(
+  mapStateToProps,
+  { removeQuest, removeEvent }
+)(EventModal);

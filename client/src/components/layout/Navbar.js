@@ -4,39 +4,40 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { logoutUser } from '../../actions/userActions';
 
-const Navbar = ({ title, icon, user, logoutUser }) => {
+export const Navbar = ({ title, icon, user, logoutUser }) => {
   const logout = () => {
     logoutUser();
-    console.log('logout user');
   };
   const guestLinks = (
-    <Fragment>
+    <ul data-test='navbar-links-guest'>
       <li>
         <Link to='/'>Home</Link>
       </li>
-    </Fragment>
+    </ul>
   );
   const authLinks = (
-    <Fragment>
+    <ul data-test='navbar-links-auth'>
       <li>
         <Link to='/'>Home</Link>
       </li>
       <li>
-        <a onClick={logout}>Logout</a>
+        <a onClick={logout} data-test='logout-button'>
+          Logout
+        </a>
       </li>
-    </Fragment>
+    </ul>
   );
 
   return (
-    <div className='navbar-fixed'>
+    <div className='navbar-fixed' data-test='component-navbar'>
       <nav className='amber'>
         <div className='nav-wrapper'>
           <div className='navbar  bg-primary'>
-            <a href='/#' className='brand-logo center'>
+            <a href='/#' className='brand-logo center' data-test='navbar-title'>
               <i className={icon} />
               {title}
             </a>
-            <ul>{user ? authLinks : guestLinks}</ul>
+            {user ? authLinks : guestLinks}
           </div>
         </div>
       </nav>
@@ -50,8 +51,8 @@ Navbar.propTypes = {
 };
 
 Navbar.defaultProps = {
-  title: 'CryptoSim'
-  //   icon: 'fas fa-id-card-alt'
+  title: 'CryptoSim',
+  icon: 'fas fa-id-card-alt'
 };
 
 const mapStateToProps = ({ user }) => ({

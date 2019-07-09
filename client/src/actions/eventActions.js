@@ -27,6 +27,7 @@ export const addEvent = () => dispatch => {
 };
 
 export const removeEvent = id => dispatch => {
+  console.log('id', id);
   dispatch({
     type: REMOVE_EVENT,
     payload: id
@@ -51,6 +52,8 @@ export const addQuest = () => dispatch => {
 };
 
 export const removeQuest = id => dispatch => {
+  console.log('id', id);
+
   dispatch({
     type: REMOVE_QUEST,
     payload: id

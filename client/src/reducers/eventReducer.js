@@ -17,7 +17,7 @@ export default (state = initialState, action) => {
         events: [...state.events, action.payload]
       };
     case REMOVE_EVENT:
-      let newEvents = state.events.filter(e => e !== action.paylaod);
+      let newEvents = state.events.filter(e => e.id !== action.payload);
       return {
         ...state,
         events: [...newEvents]
@@ -28,7 +28,7 @@ export default (state = initialState, action) => {
         quests: [...state.quests, action.payload]
       };
     case REMOVE_QUEST:
-      let newQuests = state.quests.filter(e => e !== action.paylaod);
+      let newQuests = state.quests.filter(e => e.id !== action.payload);
       return {
         ...state,
         quests: [...newQuests]
