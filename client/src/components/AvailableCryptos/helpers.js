@@ -5,7 +5,7 @@ export const sortByName = (arr = []) => {
 };
 export const sortByPrice = arr => {
   arr.sort((a, b) => {
-    return a.price - b.price;
+    return a.close - b.close;
   });
 };
 export const sortByChange = arr => {

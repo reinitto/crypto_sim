@@ -4,14 +4,7 @@ import {
   SELL_CRYPTO,
   GET_USER_LOCAL,
   LOGOUT_USER,
-  ERROR,
-  SAVE_USER,
-  RESET_TIMES_TO_INVEST_LEFT,
-  UPDATE_TIMES_TO_INVEST_LEFT,
-  GET_TIMES_TO_INVEST,
-  BUY_CRYPTO,
-  SET_ALERT,
-  REMOVE_ALERT
+  BUY_CRYPTO
 } from './types';
 import { setAlert } from './alertActions';
 
@@ -100,37 +93,38 @@ export const buyCrypto = (
 ) => dispatch => {
   let timesLeft = timesToInvestLeft;
   if (timesLeft < 1) {
+    dispatch(setAlert('Cant invest anymore this week', 'red'));
+  } else {
+    let moneyToSpend = Math.floor(userMoney / timesLeft);
+
+    let coinsCanBuy = moneyToSpend / coinPrice;
+    let multiplierLength = coinPrice.toString().split('').length;
+    let coinsBought =
+      Math.floor(coinsCanBuy * multiplierLength) / multiplierLength;
+    let moneyLeft = userMoney - moneyToSpend;
+
     dispatch({
-      type: SET_ALERT,
-      payload: 'Cant invest anymore this week'
+      type: BUY_CRYPTO,
+      payload: {
+        money: moneyLeft,
+        name: coinName,
+        amount: coinsBought
+      }
     });
   }
-  let moneyToSpend = Math.floor(userMoney / timesLeft);
-
-  let coinsCanBuy = moneyToSpend / coinPrice;
-  let multiplierLength = coinPrice.toString().split('').length;
-  let coinsBought =
-    Math.floor(coinsCanBuy * multiplierLength) / multiplierLength;
-  let moneyLeft = userMoney - moneyToSpend;
-
-  dispatch({
-    type: BUY_CRYPTO,
-    payload: {
-      money: moneyLeft,
-      name: coinName,
-      amount: coinsBought,
-      timesToInvestLeft: timesLeft - 1
-    }
-  });
 };
-export const sellCrypto = (name, close) => dispatch => {
-  dispatch({
-    type: SELL_CRYPTO,
-    payload: {
-      name,
-      price: close
-    }
-  });
+export const sellCrypto = (name, close, timesToInvestLeft) => dispatch => {
+  if (timesToInvestLeft < 1) {
+    dispatch(setAlert('Cant invest anymore this week', 'red'));
+  } else {
+    dispatch({
+      type: SELL_CRYPTO,
+      payload: {
+        name,
+        price: close
+      }
+    });
+  }
 };
 
 export const logoutUser = () => dispatch => {

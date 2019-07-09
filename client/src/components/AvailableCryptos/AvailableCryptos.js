@@ -4,43 +4,67 @@ import {
   getAvailableCryptos,
   getAllCryptos
 } from '../../actions/cryptoActions';
-import CryptoItemSmall from './CryptoItemSmall';
+import CryptoItem from './CryptoItem';
 import { sortByChange, sortByName, sortByPrice } from './helpers';
 import Spinner from '../layout/Spinner';
 import PropTypes from 'prop-types';
+import { advanceTime } from '../../actions/userActions';
 
-function AvailableCryptos({ getAllCryptos, time, cryptos: { allCryptos } }) {
+function AvailableCryptos({
+  advanceTime,
+  getAllCryptos,
+  time,
+  cryptos: { allCryptos }
+}) {
   const [cryptosState, setCryptosState] = useState(null);
   const [nameToggle, toggleNameSort] = useState(false);
   const [changeToggle, toggleChangeSort] = useState(false);
   const [priceToggle, togglePriceSort] = useState(false);
-  let dates =
-    allCryptos &&
-    Object.keys(allCryptos).length > 0 &&
-    Object.keys(allCryptos).reduce((acc, curr) => {
-      return acc > curr ? curr : acc;
-    });
-  useEffect(() => {
-    getAllCryptos(time);
-    sortCryptos('name', allCryptos[time]);
-  }, [time, dates]);
 
+  const isInArray = (array, name) => {
+    let isTrue;
+    array.forEach(i => {
+      if (i.name == name) {
+        isTrue = true;
+      }
+    });
+    return isTrue;
+  };
+
+  useEffect(() => {
+    if (Object.keys(allCryptos).length === 0) {
+      getAllCryptos(time);
+    } else if (time) {
+      sortCryptos('name', allCryptos[time]);
+    }
+  }, [time]);
   const sortCryptos = (sortBy = 'name', cryptoArray = [], reverse = false) => {
-    let sortedCryptos = [...cryptoArray];
+    if (cryptoArray.length === 0) {
+      setCryptosState([]);
+    }
+    let sortedCryptos = [];
+    cryptoArray.forEach(c => {
+      if (!isInArray(sortedCryptos, c.name)) {
+        sortedCryptos.push(c);
+      } else {
+        console.log(`${c.name} is already in array`);
+      }
+    });
+
     if (sortBy === 'name') {
       sortByName(sortedCryptos);
       sortedCryptos = sortedCryptos.map(c => (
-        <CryptoItemSmall key={c.name} item={c} />
+        <CryptoItem key={c.name} item={c} />
       ));
     } else if (sortBy === 'change') {
       sortByChange(sortedCryptos);
       sortedCryptos = sortedCryptos.map(c => (
-        <CryptoItemSmall key={c.name} item={c} />
+        <CryptoItem key={c.name} item={c} />
       ));
     } else if (sortBy === 'price') {
       sortByPrice(sortedCryptos);
       sortedCryptos = sortedCryptos.map(c => (
-        <CryptoItemSmall key={c.name} item={c} />
+        <CryptoItem key={c.name} item={c} />
       ));
     }
     if (reverse) {
@@ -52,7 +76,21 @@ function AvailableCryptos({ getAllCryptos, time, cryptos: { allCryptos } }) {
   if (!time) {
     return <Spinner />;
   }
+  if (allCryptos && Object.keys(allCryptos).length === 0) {
+    return <Spinner />;
+  }
+  if (cryptosState === null) {
+    sortCryptos('name', allCryptos[time]);
+  }
 
+  if (cryptosState && cryptosState.length === 0) {
+    return (
+      <div>
+        no cryptos available today
+        <button onClick={() => advanceTime()}>Advance Time</button>
+      </div>
+    );
+  }
   return (
     <table className='centered'>
       <thead>
@@ -65,7 +103,10 @@ function AvailableCryptos({ getAllCryptos, time, cryptos: { allCryptos } }) {
                 sortCryptos('name', allCryptos[time], nameToggle);
               }}
             >
-              Name
+              <span>Name</span>
+              <small className='left valign-wrapper'>
+                <i className='material-icons tiny '>sort_by_alpha</i>
+              </small>
             </a>
           </th>
           <th>
@@ -76,7 +117,10 @@ function AvailableCryptos({ getAllCryptos, time, cryptos: { allCryptos } }) {
                 sortCryptos('change', allCryptos[time], changeToggle);
               }}
             >
-              Change
+              <span>Change</span>
+              <small className='left valign-wrapper'>
+                <i className='material-icons tiny '>sort</i>
+              </small>
             </a>
           </th>
           <th>
@@ -87,7 +131,10 @@ function AvailableCryptos({ getAllCryptos, time, cryptos: { allCryptos } }) {
                 sortCryptos('price', allCryptos[time], priceToggle);
               }}
             >
-              Price
+              <span>Price</span>
+              <small className='left valign-wrapper'>
+                <i className='material-icons tiny '>sort</i>
+              </small>
             </a>
           </th>
 
@@ -95,6 +142,10 @@ function AvailableCryptos({ getAllCryptos, time, cryptos: { allCryptos } }) {
           <th>Sell</th>
         </tr>
       </thead>
+      {/* <tbody>
+        {allCryptos[time] &&
+          allCryptos[time].map(c => <CryptoItem key={c.name} item={c} />)}
+      </tbody> */}
 
       <tbody>{cryptosState}</tbody>
     </table>
@@ -115,5 +166,5 @@ const mapStateToProps = ({ user, cryptos }) => ({
 
 export default connect(
   mapStateToProps,
-  { getAvailableCryptos, getAllCryptos }
+  { getAvailableCryptos, getAllCryptos, advanceTime }
 )(AvailableCryptos);

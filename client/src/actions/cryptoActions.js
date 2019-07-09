@@ -1,14 +1,18 @@
-import { GET_ALL_CRYPTOS, GET_AVAILABLE_CRYPTOS } from './types';
+import {
+  GET_ALL_CRYPTOS,
+  GET_AVAILABLE_CRYPTOS,
+  REMOVE_TODAYS_CRYPTOS
+} from './types';
 
 // Get Contacts
 export const getAllCryptos = time => async dispatch => {
   try {
-    let week = 864000;
-    let weeks = 10;
+    let day = 86400;
+    let multiplier = 1;
     var data = [];
-    for (var i = 0; i < weeks; i++) {
+    for (var i = 0; i < multiplier; i++) {
       data.push(
-        await fetch(`./cryptos/${time + week * i}`).then(res => res.json())
+        await fetch(`./cryptos/${time + day * i}`).then(res => res.json())
       );
     }
 
@@ -43,6 +47,13 @@ export const getAllCryptos = time => async dispatch => {
 export const getAvailableCryptos = time => dispatch => {
   dispatch({
     type: GET_AVAILABLE_CRYPTOS,
+    payload: time
+  });
+};
+
+export const removeTodaysCryptos = time => dispatch => {
+  dispatch({
+    type: REMOVE_TODAYS_CRYPTOS,
     payload: time
   });
 };

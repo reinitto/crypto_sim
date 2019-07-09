@@ -7,15 +7,19 @@ const your_api_key =
 let timestampObject = {};
 
 // use this to write data to mongo db
-let coins;
+// let coins;
 // fetch('https://min-api.cryptocompare.com/data/all/coinlist')
 //   .then(res => res.json())
 //   .then(async res => {
 //     coins = { ...res.Data };
-//     let coinNames = Object.keys(coins);
-//     let promises = coinNames.slice(200, 300).map(coinName =>
+//     let coinNames = Object.keys(coins).sort();
+//     // console.log('coinnames', coinNames);
+//     console.log('btc', coins['BTC']);
+
+//     //https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&allData=true
+//     let promises = ['BTC', 'LTC'].map(coinName =>
 //       fetch(
-//         `https://min-api.cryptocompare.com/data/histoday?fsym=${coinName}&tsym=USD&aggregate=7&allData=true&api_key=${your_api_key}`
+//         `https://min-api.cryptocompare.com/data/histoday?fsym=${coinName}&tsym=USD&aggregate=1&allData=true&api_key=${your_api_key}`
 //       )
 //         .then(res => {
 //           return res.json();
@@ -39,7 +43,7 @@ let coins;
 //             conditions,
 //             update,
 //             { new: true, upsert: true },
-//             (err, data) => {
+//             (err, res) => {
 //               console.log('err:', err);
 //               return;
 //             }

@@ -1,16 +1,13 @@
 import {
-  SAVE_USER,
+  SET_ALERT,
   LOAD_USER,
   GET_USER_LOCAL,
   LOGOUT_USER,
-  RESET_TIMES_TO_INVEST_LEFT,
   ADVANCE_TIME,
-  UPDATE_TIMES_TO_INVEST_LEFT,
-  GET_TIMES_TO_INVEST,
   BUY_CRYPTO,
   SELL_CRYPTO
 } from '../actions/types';
-
+import { setAlert } from '../actions/alertActions';
 const initialState = null;
 
 export default (state = initialState, action) => {
@@ -23,10 +20,6 @@ export default (state = initialState, action) => {
     case LOGOUT_USER:
       return initialState;
     case SELL_CRYPTO:
-      // payload: {
-      //   name: coinName,
-      //   price: coinPrice
-      // }
       // get coin
       let crypto = state.cryptos.filter(c => c.name === action.payload.name);
       if (crypto.length === 0) {
@@ -82,9 +75,11 @@ export default (state = initialState, action) => {
       };
 
     case ADVANCE_TIME:
+      // week == 864000
+      //day ==
       return {
         ...state,
-        time: state.time + 604800,
+        time: state.time + 86400,
         timesToInvestLeft: 4
       };
   }

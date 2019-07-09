@@ -1,14 +1,23 @@
-import React, { Fragment, useEffect } from 'react';
-import { getAllCryptos } from '../../actions/cryptoActions';
+import React, { Fragment, useEffect, useState } from 'react';
 import { loadUser, getUserLocal } from '../../actions/userActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AvailableCryptos from '../AvailableCryptos/AvailableCryptos';
-const Home = ({ availableCryptos, getUserLocal, loadUser, user }) => {
+
+const Home = ({
+  cryptos: { allCryptos },
+  getUserLocal,
+  loadUser,
+  user,
+  quests,
+  events
+}) => {
   useEffect(() => {
-    getUserLocal();
+    if (!user) {
+      getUserLocal();
+    }
     //eslint-disable-next-line
-  }, []);
+  }, [quests, events]);
   const getUser = () => {
     let username = document.querySelector('#username').value;
     let password = document.querySelector('#password').value;
@@ -44,28 +53,32 @@ const Home = ({ availableCryptos, getUserLocal, loadUser, user }) => {
 
   const calculateWorth = (coinName, amount) => {
     let coin =
-      availableCryptos && availableCryptos.filter(f => f.name === coinName);
-    return Math.floor(coin && coin[0].close * amount) || 0;
+      allCryptos &&
+      allCryptos[user.time] &&
+      allCryptos[user.time].filter(f => f.name === coinName);
+    return coin && coin[0] ? Math.floor(coin[0].close * amount) : 0;
   };
   if (user && user !== null) {
     return (
       <Fragment>
-        <div>
-          <h2>{`Welcome Back, ${user.userName}`}</h2>
-          <p>{`Your current available cash is $${user.money}`}</p>
-          <p>Your own these cryptos</p>
-          <ul>
-            {user.cryptos &&
-              user.cryptos.map(c => (
-                <li key={c.name + c.amount}>
-                  <strong>{c.name}:</strong> {Math.floor(c.amount)} worth $
-                  {calculateWorth(c.name, c.amount)}
-                </li>
-              ))}
-          </ul>
-          <div>Theres no time to waste, today is {time()}</div>
+        <h2>{`Welcome Back, ${user.userName}`}</h2>
+        <div className='row'>
+          <div className='col s12 m6'>
+            <p>{`Your current available cash is $${Math.floor(user.money)}`}</p>
+            <p>Your own these cryptos</p>
+            <ul>
+              {user.cryptos &&
+                user.cryptos.map(c => (
+                  <li key={c.name + c.amount}>
+                    <strong>{c.name}:</strong> {Math.floor(c.amount)} worth $
+                    {calculateWorth(c.name, c.amount)}
+                  </li>
+                ))}
+            </ul>
+            <div>Today is {time()}</div>
+          </div>
+          <div className='col s12 m6'>Your Skills</div>
         </div>
-
         <AvailableCryptos />
       </Fragment>
     );
@@ -94,18 +107,19 @@ const Home = ({ availableCryptos, getUserLocal, loadUser, user }) => {
 };
 
 Home.propTypes = {
-  getAllCryptos: PropTypes.func.isRequired,
   cryptos: PropTypes.object.isRequired,
   loadUser: PropTypes.func.isRequired
 };
 
-const mapStateToProps = ({ cryptos, alert, user }) => ({
+const mapStateToProps = ({ cryptos, alert, user, events }) => ({
   cryptos,
   alerts: alert,
-  user
+  user,
+  events: events.events,
+  quests: events.quests
 });
 
 export default connect(
   mapStateToProps,
-  { getUserLocal, getAllCryptos, loadUser }
+  { getUserLocal, loadUser }
 )(Home);

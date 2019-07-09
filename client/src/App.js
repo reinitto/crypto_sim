@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
 import Home from './components/pages/Home';
-import Navbar from './components/layout/Navbar';
 import Alerts from './components/layout/Alerts';
+import Navbar from './components/layout/Navbar';
+import EventModal from './components/layout/EventModal';
 import GameMenu from './components/layout/GameMenu';
 import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css/dist/js/materialize.min.js';
@@ -21,6 +22,7 @@ function App() {
         <Fragment>
           <Navbar />
           <div className='container'>
+            <EventModal />
             <GameMenu />
             <Alerts />
             <Switch>
