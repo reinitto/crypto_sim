@@ -8,7 +8,7 @@ import {
 } from './types';
 import { setAlert } from './alertActions';
 
-// Get Contacts
+// Load User
 export const loadUser = (username, password) => async dispatch => {
   try {
     const res = await fetch(`/user/loadUser`, {
@@ -31,28 +31,8 @@ export const loadUser = (username, password) => async dispatch => {
     }
   } catch (error) {
     console.log('error:', error);
-    // dispatch({
-    //   type: CONTACT_ERROR,
-    //   payload: error.response.msg
-    // });
   }
 };
-// export const getLogs = () => async dispatch => {
-//   try {
-//     setLoading();
-//     const res = await fetch('/logs');
-//     const data = await res.json();
-//     dispatch({
-//       type: GET_LOGS,
-//       payload: data
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: LOGS_ERROR,
-//       payload: error.response.statusText
-//     });
-//   }
-// };
 
 export const saveUser = user => async dispatch => {
   try {
@@ -140,9 +120,5 @@ export const advanceTime = () => dispatch => {
     });
   } catch (error) {
     console.log('error:', error);
-    // dispatch({
-    //   type: CONTACT_ERROR,
-    //   payload: error.response.msg
-    // });
   }
 };
