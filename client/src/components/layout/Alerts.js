@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 
-const Alerts = ({ alerts }) => {
-  if (!alerts || alerts.length === 0) return null;
+export const Alerts = ({ alerts }) => {
   return (
-    alerts &&
-    alerts.length > 0 &&
-    alerts.map(alert => (
-      <div key={alert.id} className={`alert ${alert.type}`}>
-        <i className='fas fa-info-circle' />
-        {alert.msg}
-      </div>
-    ))
+    <div data-test='component-alerts'>
+      {alerts &&
+        alerts.length > 0 &&
+        alerts.map(alert => (
+          <div
+            data-test='component-alert'
+            key={alert.id}
+            className={`alert ${alert.type}`}
+          >
+            <i className='fas fa-info-circle' />
+            {alert.msg}
+          </div>
+        ))}
+    </div>
   );
 };
 
