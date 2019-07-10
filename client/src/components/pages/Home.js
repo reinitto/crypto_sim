@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { loadUser, getUserLocal } from '../../actions/userActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import AvailableCryptos from '../AvailableCryptos/AvailableCryptos';
+import AvailableCryptos from '../AvailableCryptos';
 
 const Home = ({
   cryptos: { allCryptos },
