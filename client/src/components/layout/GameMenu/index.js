@@ -8,22 +8,19 @@ import NextWeekButton from './NextWeekButton';
 import PropTypes from 'prop-types';
 
 export class GameMenu extends Component {
-  constructor(props) {
-    super(props);
-  }
   componentDidMount() {
     //Init Materialize JS
     M.AutoInit();
   }
-  nextWeek = user => {
+  nextWeek = () => {
     this.props.addEvent();
     this.props.addQuest();
-    this.props.removeTodaysCryptos(user.time);
+    this.props.removeTodaysCryptos(this.props.user.time);
     this.props.advanceTime();
   };
   save = user => {
     if (user) {
-      saveUser(user);
+      this.props.saveUser(user);
     }
   };
 

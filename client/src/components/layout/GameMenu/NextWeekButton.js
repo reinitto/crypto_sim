@@ -7,10 +7,7 @@ const NextWeekButton = ({ nextWeek, user }) => {
       data-test='nextweek-button'
       disabled={user.timesToInvestLeft > 0}
       className='btn-floating btn-large red'
-      onClick={() => {
-        console.log('user', user);
-        return nextWeek(user.time);
-      }}
+      onClick={() => nextWeek()}
     >
       <i className='large material-icons'>arrow_forward</i>
       Next Week

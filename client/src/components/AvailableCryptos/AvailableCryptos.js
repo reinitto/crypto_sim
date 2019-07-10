@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import {
-  getAvailableCryptos,
-  getAllCryptos
-} from '../../actions/cryptoActions';
+import { getAllCryptos } from '../../actions/cryptoActions';
 import CryptoItem from './CryptoItem';
 import { sortByChange, sortByName, sortByPrice } from './helpers';
 import Spinner from '../layout/Spinner';
@@ -34,10 +31,13 @@ function AvailableCryptos({
   useEffect(() => {
     if (Object.keys(allCryptos).length === 0) {
       getAllCryptos(time);
-    } else if (time) {
-      sortCryptos('name', allCryptos[time]);
+      setCryptosState(null);
     }
-  }, [time]);
+    // else if (time) {
+    //   console.log('time', time);
+    //
+    // }
+  }, [time, allCryptos]);
   const sortCryptos = (sortBy = 'name', cryptoArray = [], reverse = false) => {
     if (cryptoArray.length === 0) {
       setCryptosState([]);
@@ -80,6 +80,7 @@ function AvailableCryptos({
     return <Spinner />;
   }
   if (cryptosState === null) {
+    let time = Object.keys(allCryptos)[0];
     sortCryptos('name', allCryptos[time]);
   }
 
@@ -153,7 +154,6 @@ function AvailableCryptos({
 }
 
 AvailableCryptos.propTypes = {
-  getAvailableCryptos: PropTypes.func.isRequired,
   getAllCryptos: PropTypes.func.isRequired,
   availableCryptos: PropTypes.array,
   time: PropTypes.number
@@ -166,5 +166,5 @@ const mapStateToProps = ({ user, cryptos }) => ({
 
 export default connect(
   mapStateToProps,
-  { getAvailableCryptos, getAllCryptos, advanceTime }
+  { getAllCryptos, advanceTime }
 )(AvailableCryptos);

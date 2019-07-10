@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { loadUser, getUserLocal } from '../../actions/userActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
