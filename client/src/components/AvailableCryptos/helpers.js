@@ -1,3 +1,21 @@
+export const tryRequire = name => {
+  try {
+    return require(`../../../node_modules/cryptocurrency-icons/svg/color/${name
+      .toString()
+      .toLowerCase()}.svg`);
+  } catch (err) {
+    return require(`../../../node_modules/cryptocurrency-icons/svg/color/generic.svg`);
+  }
+};
+
+export const userOwnsCoin = (coinName, userCryptos) => {
+  let coin = userCryptos.filter(c => c.name === coinName);
+  if (coin.length === 0) {
+    return false;
+  }
+  return true;
+};
+
 export const sortByName = (arr = []) => {
   arr.sort((a, b) => {
     return a.name > b.name ? 1 : -1;
