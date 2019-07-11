@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { findByTestAttr } from '../../../tests/testUtils';
+import { findByTestAttr } from '../../../../tests/testUtils';
 import { Alerts } from './Alerts';
 /**
  * Function that returns ShallowWrapper for Alerts component

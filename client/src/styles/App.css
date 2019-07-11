@@ -4,36 +4,3 @@ html {
 body {
   min-height: 100%;
 }
-
-/* For use in app/styles/color-palette.scss */
-/* :root {
-  --gains50: #e7efe4;
-  --gains100: #c3d6bb;
-  --gains200: #9cbb8e;
-  --gains300: #749f61;
-  --gains400: #568b3f;
-  --gains500: #38761d;
-  --gains600: #326e1a;
-  --gains700: #2b6315;
-  --gains800: #245911;
-  --gains900: #17460a;
-  --gainsA100: #94ff7d;
-  --gainsA200: #6aff4a;
-  --gainsA400: #40ff17;
-  --gainsA700: #2dfc00;
-
-  --losses50: #f3e0e0;
-  --losses100: #e0b3b3;
-  --losses200: #cc8080;
-  --losses300: #b84d4d;
-  --losses400: #a82626;
-  --losses500: #990000;
-  --losses600: #910000;
-  --losses700: #860000;
-  --losses800: #7c0000;
-  --losses900: #6b0000;
-  --lossesA10: #ff9a9a;
-  --lossesA20: #ff6767;
-  --lossesA40: #ff3434;
-  --lossesA70: #ff1a1a;
-} */

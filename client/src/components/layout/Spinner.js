@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
 import spinner from './spinner.gif';
-const Spinner = () => {
+export const Spinner = () => {
   return (
     <Fragment>
       <img
+        data-test='component-spinner'
         src={spinner}
         alt='spinner'
         style={{ width: '200px', margin: 'auto', display: 'block' }}
