@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 export const Alerts = ({ alerts }) => {
   return (
@@ -8,7 +9,7 @@ export const Alerts = ({ alerts }) => {
         alerts.length > 0 &&
         alerts.map(alert => (
           <div
-            data-test='component-alert'
+            data-test='alerts-item'
             key={alert.id}
             className={`alert ${alert.type}`}
           >
@@ -18,6 +19,9 @@ export const Alerts = ({ alerts }) => {
         ))}
     </div>
   );
+};
+Alerts.propTypes = {
+  alerts: PropTypes.array
 };
 
 const mapStateToProps = state => ({

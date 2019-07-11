@@ -59,6 +59,14 @@ GameMenu.propTypes = {
   removeTodaysCryptos: PropTypes.func.isRequired
 };
 
+GameMenu.defaultProps = {
+  advanceTime: advanceTime,
+  saveUser: saveUser,
+  addEvent: addEvent,
+  addQuest: addQuest,
+  removeTodaysCryptos: removeTodaysCryptos
+};
+
 const mapStateToProps = ({ user }) => ({
   user
 });

@@ -1,8 +1,4 @@
-import {
-  GET_ALL_CRYPTOS,
-  GET_AVAILABLE_CRYPTOS,
-  REMOVE_TODAYS_CRYPTOS
-} from '../actions/types';
+import { GET_ALL_CRYPTOS, REMOVE_TODAYS_CRYPTOS } from '../actions/types';
 
 const initialState = { allCryptos: {} };
 

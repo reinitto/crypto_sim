@@ -2,7 +2,12 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { findByTestAttr } from '../../../tests/testUtils';
 import { Alerts } from './Alerts';
-
+/**
+ * Function that returns ShallowWrapper for Alerts component
+ * @function setup
+ * @param {array} initialState array
+ * @returns {ShallowWrapper}
+ */
 const setup = (initialState = []) => {
   const wrapper = shallow(<Alerts alerts={initialState} />);
   return wrapper;
@@ -19,6 +24,6 @@ test('renders correctly without crashing with props', () => {
     { msg: 'alert1', type: 'green', id: 2 }
   ];
   const wrapper = setup(props);
-  const alertComponent = findByTestAttr(wrapper, 'component-alert');
+  const alertComponent = findByTestAttr(wrapper, 'alerts-item');
   expect(alertComponent.length).toBe(props.length);
 });

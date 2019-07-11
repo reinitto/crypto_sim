@@ -5,7 +5,12 @@ import NextWeekButton from './NextWeekButton';
 
 const mockClick = jest.fn();
 const defaultProps = { user: { timesToInvestLeft: 0 }, nextWeek: mockClick };
-
+/**
+ * Function that returns a ShallowWrapper for NextWeekButton
+ * @function setup
+ * @param {object} props props object
+ * @returns {ShallowWrapper}
+ */
 const setup = props => {
   const setupProps = { ...defaultProps, ...props };
   const wrapper = shallow(<NextWeekButton {...setupProps} />);

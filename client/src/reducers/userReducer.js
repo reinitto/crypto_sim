@@ -1,5 +1,4 @@
 import {
-  SET_ALERT,
   LOAD_USER,
   GET_USER_LOCAL,
   LOGOUT_USER,
@@ -7,14 +6,12 @@ import {
   BUY_CRYPTO,
   SELL_CRYPTO
 } from '../actions/types';
-import { setAlert } from '../actions/alertActions';
 const initialState = null;
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_USER_LOCAL:
-      let user = { ...action.payload };
-      return user;
+      return { ...action.payload };
     default:
       return state;
     case LOGOUT_USER:
@@ -75,8 +72,7 @@ export default (state = initialState, action) => {
       };
 
     case ADVANCE_TIME:
-      // week == 864000
-      //day ==
+      //day ==86400
       return {
         ...state,
         time: state.time + 86400,
