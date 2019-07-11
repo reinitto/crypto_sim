@@ -2,123 +2,98 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { findByTestAttr } from '../../../tests/testUtils';
 import { CryptoItem } from './CryptoItem';
-// event, onClickFunction
+
 const defaultProps = {
   buyCrypto: jest.fn(),
   sellCrypto: jest.fn(),
   userCryptos: []
 };
-//title, icon, user, logoutUser
+/**
+ * Factory function to create ShallowWrapper for CryptoItem Component
+ * @function setup
+ * @param {object} props
+ * @returns {ShallowWrapper}
+ */
 const setup = props => {
   const setupProps = { ...defaultProps, ...props };
   const wrapper = shallow(<CryptoItem {...setupProps} />);
   return wrapper;
 };
+describe('renders correctly without crashing', () => {
+  const prop = {
+    open: 22,
+    close: 44,
+    high: 55,
+    low: 11,
+    name: 'cryptoName'
+  };
+  const wrapper = setup({ item: prop });
+  const item = findByTestAttr(wrapper, 'available-cryptos-item');
+  test('renders correctly without crashing', () => {
+    expect(item.length).toBe(1);
+  });
+  test('item name is rendered', () => {
+    expect(item.text()).toContain(prop.name);
+  });
+  test('item close is rendered', () => {
+    expect(item.text()).toContain(prop.close);
+  });
+  test('item change is rendered', () => {
+    const change = ((prop.close / prop.open) * 100 - 100).toPrecision(4);
+    expect(item.text()).toContain(change);
+  });
+});
+describe('Buy button', () => {
+  const mock = jest.fn();
+  const props = {
+    buyCrypto: mock,
+    item: {
+      open: 22,
+      close: 44,
+      high: 55,
+      low: 11,
+      name: 'cryptoName'
+    }
+  };
+  const wrapper = setup(props);
+  const buy_button = findByTestAttr(
+    wrapper,
+    'available-cryptos-item-buy-button'
+  );
+  test('buy button renders correctly', () => {
+    expect(buy_button.length).toBe(1);
+  });
+  test('buyCrypto is called when buy button is clicked', () => {
+    buy_button.simulate('click');
+    expect(mock).toHaveBeenCalled();
+  });
+});
 
-test('is renders properly ', () => {
-  const prop = {
-    open: 22,
-    close: 44,
-    high: 55,
-    low: 11,
-    name: 'cryptoName'
-  };
-  const wrapper = setup({ item: prop });
-  const item = findByTestAttr(wrapper, 'available-cryptos-item');
-  expect(item.length).toBe(1);
-});
-test('renders item props', () => {
-  const prop = {
-    open: 22,
-    close: 44,
-    high: 55,
-    low: 11,
-    name: 'cryptoName'
-  };
-  const wrapper = setup({ item: prop });
-  const item = findByTestAttr(wrapper, 'available-cryptos-item');
-  expect(item.text()).toContain(prop.name);
-});
-test('buy button works', () => {
-  const mock = jest.fn();
+describe('Sell button', () => {
+  const mockF = jest.fn();
+  const mockUserOwnsCoin = jest.fn(() => true);
   const props = {
-    buyCrypto: mock,
+    sellCrypto: mockF,
     item: {
       open: 22,
       close: 44,
       high: 55,
       low: 11,
       name: 'cryptoName'
-    }
-  };
-  const wrapper = setup(props);
-  const buy_button = findByTestAttr(
-    wrapper,
-    'available-cryptos-item-buy-button'
-  );
-  expect(buy_button.length).toBe(1);
-  buy_button.simulate('click');
-  expect(mock).toHaveBeenCalled();
-});
-test('buy button renders and buyCrypto is called when clicked', () => {
-  const mock = jest.fn();
-  const props = {
-    buyCrypto: mock,
-    item: {
-      open: 22,
-      close: 44,
-      high: 55,
-      low: 11,
-      name: 'cryptoName'
-    }
-  };
-  const wrapper = setup(props);
-  const buy_button = findByTestAttr(
-    wrapper,
-    'available-cryptos-item-buy-button'
-  );
-  expect(buy_button.length).toBe(1);
-  buy_button.simulate('click');
-  expect(mock).toHaveBeenCalled();
-});
-test('sell button renders', () => {
-  const mock = jest.fn();
-  const props = {
-    sellCrypto: mock,
-    item: {
-      open: 22,
-      close: 44,
-      high: 55,
-      low: 11,
-      name: 'cryptoName'
-    }
+    },
+    timesToInvestLeft: 4,
+    userOwnsCoin: mockUserOwnsCoin
   };
   const wrapper = setup(props);
   const sell_button = findByTestAttr(
     wrapper,
     'available-cryptos-item-sell-button'
   );
-  expect(sell_button.length).toBe(1);
+  test('it renders properly', () => {
+    expect(sell_button.length).toBe(1);
+  });
+  test('it calls passed in function when clicked on', () => {
+    sell_button.simulate('click');
+    expect(mockF).toBeCalledTimes(1);
+  });
 });
-// test('button calls passed in function', () => {
-//   const mockF = jest.fn();
-//   const props = {
-//     event: { message: 'I am message', id: 1, details: { cost: 100 } },
-//     onClickFunction: mockF
-//   };
-//   const wrapper = setup(props);
-//   const button = findByTestAttr(wrapper, 'modal-accept-button');
-//   button.simulate('click');
-//   expect(mockF).toBeCalledTimes(1);
-// });
-// test('function is called with id as argument', () => {
-//   const mockF = jest.fn();
-//   const props = {
-//     event: { message: 'I am message', id: 1, details: { cost: 100 } },
-//     onClickFunction: mockF
-//   };
-//   const wrapper = setup(props);
-//   const button = findByTestAttr(wrapper, 'modal-accept-button');
-//   button.simulate('click');
-//   expect(mockF).toBeCalledWith(props.event.id);
-// });

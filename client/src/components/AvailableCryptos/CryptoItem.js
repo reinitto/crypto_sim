@@ -52,12 +52,12 @@ export function CryptoItem({
         <img src={icon} alt='coin_icon' className='left' /> {name}
       </td>
       <td style={{ backgroundColor: `${color_close}` }}>
-        {changeInPrice}%
+        {`${changeInPrice}%`}
         <i className='material-icons small'>
           {changeInPrice > 0 ? 'arrow_drop_up' : 'arrow_drop_down'}
         </i>
       </td>
-      <td>${close}</td>
+      <td>{`$${close}`}</td>
       <td>
         <button
           data-test='available-cryptos-item-buy-button'

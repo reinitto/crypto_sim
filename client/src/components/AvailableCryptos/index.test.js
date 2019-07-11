@@ -9,6 +9,12 @@ const defaultProps = {
   advanceTime: jest.fn()
 };
 
+/**
+ * Factory function to create ShallowWrapper for AvailableCryptos Component
+ * @function setup
+ * @param {object} props
+ * @returns {ShallowWrapper}
+ */
 const setup = props => {
   const setupProps = { ...defaultProps, ...props };
   const wrapper = shallow(<AvailableCryptos {...setupProps} />);
@@ -23,7 +29,7 @@ test('renders without crashing ', () => {
   );
   expect(availableCryptosComponent.length).toBe(1);
 });
-test('renders table if allCryptos[date] prop length is bigger than 0', () => {
+test('renders table if allCryptos[date].length > 0', () => {
   const props = {
     allCryptos: {
       12345678: [

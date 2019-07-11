@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export const CryptosTable = ({ children, sortCryptos }) => (
   <table data-test='component-cryptos-table' className='centered'>
@@ -51,5 +52,10 @@ export const CryptosTable = ({ children, sortCryptos }) => (
     <tbody>{children}</tbody>
   </table>
 );
+
+CryptosTable.propTypes = {
+  sortCryptos: PropTypes.func.isRequired,
+  children: PropTypes.array
+};
 
 export default CryptosTable;

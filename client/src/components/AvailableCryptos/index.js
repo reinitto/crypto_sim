@@ -23,6 +23,7 @@ export class AvailableCryptos extends Component {
   advanceTime() {
     this.props.advanceTime();
   }
+
   render() {
     let content;
 
@@ -35,6 +36,7 @@ export class AvailableCryptos extends Component {
       );
       content = sortedContent.map(i => <CryptoItem key={i.name} item={i} />);
       if (content && content.length > 0) {
+        // allCryptos[date] has items
         return (
           <CryptosTable
             data-test='component-available-cryptos'
@@ -44,6 +46,7 @@ export class AvailableCryptos extends Component {
           </CryptosTable>
         );
       } else {
+        // allCryptos[date] is empty
         return (
           <div data-test='component-available-cryptos'>
             <p>No cryptos available today</p>
@@ -54,6 +57,8 @@ export class AvailableCryptos extends Component {
         );
       }
     } else {
+      // No allCryptos[date]
+      // Means cryptos havent been received from server
       return (
         <div data-test='component-available-cryptos'>
           <Spinner data-test='component-loading' />
