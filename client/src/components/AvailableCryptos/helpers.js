@@ -23,7 +23,7 @@ export const sortByName = (arr = []) => {
 };
 export const sortByPrice = arr => {
   arr.sort((a, b) => {
-    return a.close - b.close;
+    return b.close - a.close;
   });
 };
 export const sortByChange = arr => {
@@ -35,7 +35,7 @@ export const sortByChange = arr => {
 export function colorPicker(perc, min = -150, max = 150) {
   let base = max - min;
 
-  if (base == 0) {
+  if (base === 0) {
     perc = 100;
   } else {
     perc = ((perc - min) / base) * 100;
@@ -59,9 +59,40 @@ export function colorPicker(perc, min = -150, max = 150) {
 export const isInArray = (array, name) => {
   let isTrue;
   array.forEach(i => {
-    if (i.name == name) {
+    if (i.name === name) {
       isTrue = true;
     }
   });
   return isTrue;
 };
+
+export function sortCryptos(
+  sortBy = 'name',
+  cryptoArray = [],
+  reverse = false
+) {
+  if (cryptoArray.length === 0) {
+    return [];
+  }
+  let sortedCryptos = [];
+  cryptoArray.forEach(c => {
+    if (!isInArray(sortedCryptos, c.name)) {
+      sortedCryptos.push(c);
+    } else {
+      console.log(`${c.name} is already in array`);
+    }
+  });
+
+  if (sortBy === 'name') {
+    sortByName(sortedCryptos);
+  } else if (sortBy === 'change') {
+    sortByChange(sortedCryptos);
+  } else if (sortBy === 'price') {
+    sortByPrice(sortedCryptos);
+  }
+  if (reverse) {
+    return sortedCryptos.reverse();
+  } else {
+    return sortedCryptos;
+  }
+}

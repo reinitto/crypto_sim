@@ -4,7 +4,9 @@ import {
   sortByName,
   sortByPrice,
   sortByChange,
-  colorPicker
+  colorPicker,
+  isInArray,
+  sortCryptos
 } from './helpers';
 
 describe('tryRequire', () => {
@@ -46,15 +48,15 @@ describe('sortByName', () => {
 });
 describe('sortByPrice', () => {
   //props:name, userCryptos
-  test('sorts array by item.close in place cheapest first', () => {
+  test('sorts array by item.close in place expensive first', () => {
     const array = [
       { name: 'gold', close: 111 },
       { name: 'btc', close: 11 },
       { name: 'etc', close: 1111 }
     ];
     sortByPrice(array);
-    expect(array[0]).toStrictEqual({ name: 'btc', close: 11 });
-    expect(array[2]).toStrictEqual({ name: 'etc', close: 1111 });
+    expect(array[2]).toStrictEqual({ name: 'btc', close: 11 });
+    expect(array[0]).toStrictEqual({ name: 'etc', close: 1111 });
   });
 });
 describe('sortByChange', () => {
@@ -77,5 +79,93 @@ describe('colorPicker', () => {
     const color = colorPicker(percent);
     expect(color.length).toBe(7);
     expect(color[0]).toBe('#');
+  });
+});
+
+describe('isInArray function', () => {
+  test('returns true if item.name is in array ', () => {
+    const item = {
+      name: 'BTC'
+    };
+    const array = [item, { name: 'ltc' }];
+    const result = isInArray(array, 'BTC');
+    expect(result).toBeTruthy;
+  });
+  test('returns false if item.name is not in array ', () => {
+    const item = {
+      name: 'BTC'
+    };
+    const array = [item, { name: 'ltc' }];
+    const result = isInArray(array, 'YEET_COIN');
+    expect(result).toBeFalsy;
+  });
+});
+
+describe('sortCryptos', () => {
+  let unsortedCryptos;
+
+  beforeEach(() => {
+    unsortedCryptos = [
+      {
+        name: 'A coin',
+        open: 11,
+        close: 22,
+        high: 33,
+        low: 10
+      },
+      {
+        name: 'Z coin',
+        open: 15,
+        close: 12,
+        high: 16,
+        low: 3
+      },
+      {
+        name: 'D coin',
+        open: 44,
+        close: 1000,
+        high: 1000,
+        low: 44
+      }
+    ];
+  });
+  test('returns sorted array by name', () => {
+    let sortBy = 'name';
+    let reverse = false;
+    let sorted = sortCryptos(sortBy, unsortedCryptos, reverse);
+    let expected = {
+      name: 'A coin',
+      open: 11,
+      close: 22,
+      high: 33,
+      low: 10
+    };
+    expect(sorted[0]).toStrictEqual(expected);
+  });
+  test('returns sorted array by change', () => {
+    let sortBy = 'change';
+    let reverse = false;
+    let sorted = sortCryptos(sortBy, unsortedCryptos, reverse);
+    let expected = {
+      name: 'D coin',
+      open: 44,
+      close: 1000,
+      high: 1000,
+      low: 44
+    };
+    expect(sorted[0]).toStrictEqual(expected);
+  });
+  test('returns sorted array by close price', () => {
+    let sortBy = 'price';
+    let reverse = false;
+    let sorted = sortCryptos(sortBy, unsortedCryptos, reverse);
+    let expected = {
+      name: 'D coin',
+      open: 44,
+      close: 1000,
+      high: 1000,
+      low: 44
+    };
+    expect(sorted[0]).toStrictEqual(expected);
   });
 });

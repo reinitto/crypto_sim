@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { loadUser, getUserLocal } from '../../actions/userActions';
+import { getAllCryptos } from '../../actions/cryptoActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AvailableCryptos from '../AvailableCryptos';
@@ -10,7 +11,8 @@ const Home = ({
   loadUser,
   user,
   quests,
-  events
+  events,
+  getAllCryptos
 }) => {
   useEffect(() => {
     if (!user) {
@@ -58,6 +60,9 @@ const Home = ({
       allCryptos[user.time].filter(f => f.name === coinName);
     return coin && coin[0] ? Math.floor(coin[0].close * amount) : 0;
   };
+  if (user && user.time && Object.keys(allCryptos).length === 0) {
+    getAllCryptos(user.time);
+  }
   if (user && user !== null) {
     return (
       <Fragment>
@@ -108,7 +113,8 @@ const Home = ({
 
 Home.propTypes = {
   cryptos: PropTypes.object.isRequired,
-  loadUser: PropTypes.func.isRequired
+  loadUser: PropTypes.func.isRequired,
+  getAllCryptos: PropTypes.func.isRequired
 };
 
 const mapStateToProps = ({ cryptos, alert, user, events }) => ({
@@ -121,5 +127,5 @@ const mapStateToProps = ({ cryptos, alert, user, events }) => ({
 
 export default connect(
   mapStateToProps,
-  { getUserLocal, loadUser }
+  { getUserLocal, loadUser, getAllCryptos }
 )(Home);

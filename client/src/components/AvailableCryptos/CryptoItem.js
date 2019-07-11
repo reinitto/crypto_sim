@@ -15,7 +15,7 @@ export function CryptoItem({
   tryRequire,
   userOwnsCoin
 }) {
-  const { open, close, high, low, name } = item;
+  const { open, close, name } = item;
 
   let icon = name && tryRequire(name);
 
@@ -93,7 +93,9 @@ CryptoItem.propTypes = {
 
 CryptoItem.defaultProps = {
   tryRequire: tryRequire,
-  userOwnsCoin: userOwnsCoin
+  userOwnsCoin: userOwnsCoin,
+  buyCrypto: buyCrypto,
+  sellCrypto: sellCrypto
 };
 
 const mapStateToProps = ({ user }) => ({

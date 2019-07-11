@@ -5,9 +5,6 @@ import { removeQuest, removeEvent } from '../../../actions/eventActions';
 import EventModalItem from './Item';
 
 export class EventModal extends Component {
-  constructor(props) {
-    super(props);
-  }
   dismissEventById = id => {
     this.props.removeQuest(id);
     this.props.removeEvent(id);
