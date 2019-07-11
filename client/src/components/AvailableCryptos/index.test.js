@@ -21,37 +21,38 @@ const setup = props => {
   return wrapper;
 };
 
-test('renders without crashing ', () => {
-  const wrapper = setup();
-  const availableCryptosComponent = findByTestAttr(
-    wrapper,
-    'component-available-cryptos'
-  );
-  expect(availableCryptosComponent.length).toBe(1);
-});
-test('renders table if allCryptos[date].length > 0', () => {
-  const props = {
-    allCryptos: {
-      12345678: [
-        { name: 'btc', open: 11, close: 22, high: 33, low: 1 },
-        { name: 'ltc', open: 11, close: 22, high: 33, low: 1 }
-      ]
-    }
-  };
-  const wrapper = setup(props);
-  const component = findByTestAttr(wrapper, 'component-available-cryptos');
-  expect(component.length).toBe(1);
-});
+describe('renders properly', () => {
+  test('renders without crashing ', () => {
+    const wrapper = setup();
+    const availableCryptosComponent = findByTestAttr(
+      wrapper,
+      'component-available-cryptos'
+    );
+    expect(availableCryptosComponent.length).toBe(1);
+  });
+  test('renders table if items provided', () => {
+    const props = {
+      allCryptos: {
+        12345678: [
+          { name: 'btc', open: 11, close: 22, high: 33, low: 1 },
+          { name: 'ltc', open: 11, close: 22, high: 33, low: 1 }
+        ]
+      }
+    };
+    const wrapper = setup(props);
+    const component = findByTestAttr(wrapper, 'component-available-cryptos');
+    expect(component.length).toBe(1);
+  });
 
-test('shows spinner if allCryptos prop has no keys', () => {
-  const props = {
-    allCryptos: {}
-  };
-  const wrapper = setup(props);
-  const cryptosComponent = findByTestAttr(wrapper, 'component-loading');
-  expect(cryptosComponent.length).toBe(1);
+  test('renders spinner if items === undefined or null', () => {
+    const props = {
+      allCryptos: {}
+    };
+    const wrapper = setup(props);
+    const cryptosComponent = findByTestAttr(wrapper, 'component-loading');
+    expect(cryptosComponent.length).toBe(1);
+  });
 });
-
 describe('allCryptos[date] array is empty', () => {
   const wrapper = setup();
   test('renders "No cryptos available today"', () => {
