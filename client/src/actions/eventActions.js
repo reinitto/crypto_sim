@@ -7,8 +7,6 @@ function getRandomInt(max) {
 
 let eventMessage = ['event1', 'event2', 'You lost your lucky screwdriver'];
 
-let cost = [100];
-
 export const addEvent = () => dispatch => {
   const id = uuid.v4();
   const num = getRandomInt(eventMessage.length);

@@ -22,7 +22,7 @@ export const loadUser = (username, password) => async dispatch => {
     let data = await res.json();
     localStorage.setItem('user', JSON.stringify(data.user));
     if (data.error) {
-      console.log('error', data.error);
+      dispatch(setAlert(data.error, 'red'));
     } else {
       dispatch({
         type: LOAD_USER,
@@ -30,7 +30,7 @@ export const loadUser = (username, password) => async dispatch => {
       });
     }
   } catch (error) {
-    console.log('error:', error);
+    dispatch(setAlert(error.response.msg, 'red'));
   }
 };
 
@@ -97,6 +97,7 @@ export const sellCrypto = (name, close, timesToInvestLeft) => dispatch => {
   if (timesToInvestLeft < 1) {
     dispatch(setAlert('Cant invest anymore this week', 'red'));
   } else {
+    name = name.toLowerCase();
     dispatch({
       type: SELL_CRYPTO,
       payload: {
@@ -119,6 +120,6 @@ export const advanceTime = () => dispatch => {
       type: ADVANCE_TIME
     });
   } catch (error) {
-    console.log('error:', error);
+    dispatch(setAlert(error.response.msg, 'red'));
   }
 };

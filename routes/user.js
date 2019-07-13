@@ -34,8 +34,6 @@ const checkIfValid = (username, password) => {
 /* SAVE User. */
 router.post('/:id/save', function(req, res, next) {
   users[req.body.username] = req.body;
-  console.log('saving: req.body', req.body);
-  console.log('users[req.body.username]', users[req.body.username]);
   res.json({
     success: true,
     message: 'user saved successfully',

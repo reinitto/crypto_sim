@@ -18,7 +18,8 @@ export default (state = initialState, action) => {
       return initialState;
     case SELL_CRYPTO:
       // get coin
-      let crypto = state.cryptos.filter(c => c.name === action.payload.name);
+      const name = action.payload.name.toLowerCase();
+      let crypto = state.cryptos.filter(c => c.name.toLowerCase() === name);
       if (crypto.length === 0) {
         return {
           ...state
@@ -29,15 +30,16 @@ export default (state = initialState, action) => {
         ...state,
         money: state.money + gains,
         timesToInvestLeft: state.timesToInvestLeft - 1,
-        cryptos: [...state.cryptos.filter(c => c.name !== action.payload.name)]
+        cryptos: [...state.cryptos.filter(c => c.name.toLowerCase() !== name)]
       };
     case BUY_CRYPTO:
       //check if crypto already exists on user
-      let coin = state.cryptos.filter(c => c.name === action.payload.name);
+      const coinName = action.payload.name.toLowerCase();
+      let coin = state.cryptos.filter(c => c.name.toLowerCase() === coinName);
       if (coin.length === 0) {
         //coin doesnt exist in wallet
         let newCrypto = {
-          name: action.payload.name,
+          name: coinName,
           amount: action.payload.amount
         };
         return {
@@ -45,7 +47,7 @@ export default (state = initialState, action) => {
           timesToInvestLeft: state.timesToInvestLeft - 1,
           money: action.payload.money,
           cryptos: [
-            ...state.cryptos.filter(c => c.name !== action.payload.name),
+            ...state.cryptos.filter(c => c.name.toLowerCase() !== coinName),
             newCrypto
           ]
         };
@@ -60,7 +62,7 @@ export default (state = initialState, action) => {
           money: action.payload.money,
           timesToInvestLeft: state.timesToInvestLeft - 1,
           cryptos: [
-            ...state.cryptos.filter(c => c.name !== action.payload.name),
+            ...state.cryptos.filter(c => c.name.toLowerCase() !== coinName),
             newCoin
           ]
         };

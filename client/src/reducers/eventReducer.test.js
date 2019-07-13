@@ -58,3 +58,14 @@ test('removes event on REMOVE_EVENT action ', () => {
   });
   expect(newState.events.length).toBe(initialState.events.length - 1);
 });
+test('returns state if id not found ', () => {
+  const initialState = {
+    events: [{ msg: 'im an event', id: 1 }, { msg: 'im an event', id: 3 }],
+    quests: []
+  };
+  const newState = eventReducer(initialState, {
+    type: REMOVE_EVENT,
+    payload: 7
+  });
+  expect(newState.events.length).toBe(initialState.events.length);
+});

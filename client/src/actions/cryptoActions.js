@@ -1,8 +1,4 @@
-import {
-  GET_ALL_CRYPTOS,
-  GET_AVAILABLE_CRYPTOS,
-  REMOVE_TODAYS_CRYPTOS
-} from './types';
+import { GET_ALL_CRYPTOS, REMOVE_TODAYS_CRYPTOS, SET_ALERT } from './types';
 
 // Get Contacts
 export const getAllCryptos = time => async dispatch => {
@@ -31,24 +27,17 @@ export const getAllCryptos = time => async dispatch => {
           return acc;
         }
       }, {});
+
     dispatch({
       type: GET_ALL_CRYPTOS,
       payload: response
     });
   } catch (error) {
-    console.log('error:', error);
-    // dispatch({
-    //   type: CONTACT_ERROR,
-    //   payload: error.response.msg
-    // });
+    dispatch({
+      type: SET_ALERT,
+      payload: { msg: error.response.msg, type: 'red' }
+    });
   }
-};
-
-export const getAvailableCryptos = time => dispatch => {
-  dispatch({
-    type: GET_AVAILABLE_CRYPTOS,
-    payload: time
-  });
 };
 
 export const removeTodaysCryptos = time => dispatch => {
