@@ -1,5 +1,9 @@
 import React, { Fragment, useEffect } from 'react';
-import { loadUser, getUserLocal } from '../../actions/userActions';
+import {
+  loadUser,
+  getUserLocal,
+  registerUser
+} from '../../actions/userActions';
 import { getAllCryptos } from '../../actions/cryptoActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -12,7 +16,8 @@ const Home = ({
   user,
   quests,
   events,
-  getAllCryptos
+  getAllCryptos,
+  registerUser
 }) => {
   useEffect(() => {
     if (!user) {
@@ -25,6 +30,13 @@ const Home = ({
     let password = document.querySelector('#password').value;
     if (username && password) {
       loadUser(username, password);
+    }
+  };
+  const register = () => {
+    let username = document.querySelector('#username').value;
+    let password = document.querySelector('#password').value;
+    if (username && password) {
+      registerUser(username, password);
     }
   };
 
@@ -66,7 +78,7 @@ const Home = ({
   if (user && user !== null) {
     return (
       <Fragment>
-        <h2>{`Welcome Back, ${user.userName}`}</h2>
+        <h2>{`Welcome Back, ${user.name}`}</h2>
         <div className='row'>
           <div className='col s12 m6'>
             <p>{`Your current available cash is $${Math.floor(user.money)}`}</p>
@@ -106,6 +118,7 @@ const Home = ({
           </div>
         </div>
         <button onClick={getUser}>Load user</button>
+        <button onClick={register}>Register user</button>
       </Fragment>
     );
   }
@@ -114,6 +127,7 @@ const Home = ({
 Home.propTypes = {
   cryptos: PropTypes.object.isRequired,
   loadUser: PropTypes.func.isRequired,
+  registerUser: PropTypes.func.isRequired,
   getAllCryptos: PropTypes.func.isRequired
 };
 
@@ -127,5 +141,5 @@ const mapStateToProps = ({ cryptos, alert, user, events }) => ({
 
 export default connect(
   mapStateToProps,
-  { getUserLocal, loadUser, getAllCryptos }
+  { getUserLocal, loadUser, getAllCryptos, registerUser }
 )(Home);

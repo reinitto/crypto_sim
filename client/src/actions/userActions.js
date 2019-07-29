@@ -8,6 +8,33 @@ import {
 } from './types';
 import { setAlert } from './alertActions';
 
+//Register User
+export const registerUser = (username, password) => async dispatch => {
+  try {
+    const res = await fetch(`/user/register`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name: username, password })
+    });
+    let data = await res.json();
+    if (data.errors) {
+      data.errors.forEach(err => dispatch(setAlert(err.msg, 'red')));
+    } else {
+      console.log('reg data:', data);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      dispatch({
+        type: LOAD_USER,
+        payload: data.user
+      });
+    }
+  } catch (error) {
+    dispatch(setAlert(error.msg, 'red'));
+  }
+};
+
 // Load User
 export const loadUser = (username, password) => async dispatch => {
   try {

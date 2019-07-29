@@ -6,6 +6,7 @@ export const SELL_CRYPTO = 'SELL_CRYPTO';
 export const ERROR = 'ERROR';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const LOAD_USER = 'LOAD_USER';
+export const REGISTER_USER = 'REGISTER_USER';
 export const GET_USER_LOCAL = 'GET_USER_LOCAL';
 export const SAVE_USER = 'SAVE_USER';
 export const SAVE_USER_LOCAL = 'SAVE_USER_LOCAL';

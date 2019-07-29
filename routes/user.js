@@ -1,8 +1,11 @@
-var express = require('express');
-var router = express.Router();
-let week = 864000;
-let weeks = 290;
-let initialTime = 1279324800;
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { check, validationResult } = require('express-validator');
+const router = express.Router();
+const week = 864000;
+const weeks = 290;
+const initialTime = 1279324800;
 time = initialTime + week * weeks;
 let users = {
   1: {
@@ -23,14 +26,6 @@ let users = {
   }
 };
 
-const checkIfValid = (username, password) => {
-  if (users[username]) {
-    console.log('is valid');
-    return true;
-  }
-  return false;
-};
-
 /* SAVE User. */
 router.post('/:id/save', function(req, res, next) {
   users[req.body.username] = req.body;
@@ -41,14 +36,96 @@ router.post('/:id/save', function(req, res, next) {
   });
 });
 /* LOAD User. */
-router.post('/loadUser', function(req, res, next) {
-  let isValid = checkIfValid(req.body.username, req.body.password);
-  if (isValid) {
-    let user = { ...users[req.body.username] };
-    res.json({ user });
-  } else {
-    res.json({ error: 'invalid username or password' });
+router.post(
+  '/loadUser',
+  [
+    check('name', 'Please enter a name')
+      .not()
+      .isEmpty(),
+    check(
+      'password',
+      'Please enter a password with 6 or more characters'
+    ).isLength({ min: 6 })
+  ],
+  async function(req, res, next) {
+    let isValid = validationResult(req.body.username, req.body.password);
+    if (isValid) {
+      let user = await User.findOne({ name });
+      if (!user) {
+        return res.status(400).json({ msg: 'Invalid credentials' });
+      }
+      const isMatch = await bcrypt.compare(password, user.password);
+
+      if (!isMatch) {
+        return res.status(400).json({ msg: 'Invalid credentials' });
+      }
+      res.json({ user });
+    } else {
+      res.json({ error: 'invalid username or password' });
+    }
   }
-});
+);
+
+// CREATE User
+const User = require('../models/User');
+// @route       POST user/register
+// @desc        Register a user
+// @access      Public
+router.post(
+  '/register',
+  [
+    check('name', 'Please enter a name')
+      .not()
+      .isEmpty(),
+    check(
+      'password',
+      'Please enter a password with 6 or more characters'
+    ).isLength({ min: 6 })
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { name, password } = req.body;
+
+    try {
+      let user = await User.findOne({ name });
+
+      if (user) {
+        return res.status(400).json({ msg: 'User already exists' });
+      }
+      user = new User({
+        name,
+        password
+      });
+
+      const salt = await bcrypt.genSalt(10);
+
+      user.password = await bcrypt.hash(password, salt);
+
+      await user.save();
+      const payload = {
+        user
+      };
+
+      jwt.sign(
+        payload,
+        process.env.JWT_SECRET,
+        {
+          expiresIn: 3600
+        },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token, user });
+        }
+      );
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
 
 module.exports = router;
