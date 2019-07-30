@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { logoutUser } from '../../../actions/userActions';
+import { logoutUser } from '../../../actions/user/userActions';
 
 export const Navbar = ({ title, icon, user, logoutUser }) => {
   const logout = () => {

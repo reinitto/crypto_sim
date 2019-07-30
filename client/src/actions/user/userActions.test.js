@@ -1,4 +1,4 @@
-import { storeFactory } from '../../tests/testUtils';
+import { storeFactory } from '../../../tests/testUtils';
 import {
   buyCrypto,
   sellCrypto,

@@ -1,5 +1,5 @@
 import uuid from 'uuid';
-import { ADD_EVENT, REMOVE_EVENT, ADD_QUEST, REMOVE_QUEST } from './types';
+import { ADD_EVENT, REMOVE_EVENT, ADD_QUEST, REMOVE_QUEST } from '../types';
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));

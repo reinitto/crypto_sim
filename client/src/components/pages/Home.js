@@ -3,8 +3,8 @@ import {
   loadUser,
   getUserLocal,
   registerUser
-} from '../../actions/userActions';
-import { getAllCryptos } from '../../actions/cryptoActions';
+} from '../../actions/user/userActions';
+import { getAllCryptos } from '../../actions/crypto/cryptoActions';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import AvailableCryptos from '../AvailableCryptos';

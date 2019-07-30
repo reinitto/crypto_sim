@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import M from 'materialize-css/dist/js/materialize.min';
-import { buyCrypto, sellCrypto } from '../../actions/userActions';
+import { buyCrypto, sellCrypto } from '../../actions/user/userActions';
 import { colorPicker, tryRequire, userOwnsCoin } from './helpers';
 
 export function CryptoItem({

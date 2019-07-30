@@ -5,7 +5,7 @@ import CryptoItem from './CryptoItem';
 import { sortCryptos } from './helpers';
 import Spinner from '../layout/Spinner';
 import PropTypes from 'prop-types';
-import { advanceTime } from '../../actions/userActions';
+import { advanceTime } from '../../actions/user/userActions';
 
 export class AvailableCryptos extends Component {
   state = {

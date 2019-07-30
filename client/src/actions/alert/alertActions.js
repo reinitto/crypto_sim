@@ -1,5 +1,5 @@
 import uuid from 'uuid';
-import { SET_ALERT, REMOVE_ALERT } from './types';
+import { SET_ALERT, REMOVE_ALERT } from '../types';
 
 /**
  * Returns Redux Thunk function that dispatches SET_ALERT action and REMOVE_ALERT action

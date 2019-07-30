@@ -5,8 +5,8 @@ import {
   GET_USER_LOCAL,
   LOGOUT_USER,
   BUY_CRYPTO
-} from './types';
-import { setAlert } from './alertActions';
+} from '../types';
+import { setAlert } from '../alert/alertActions';
 
 //Register User
 export const registerUser = (username, password) => async dispatch => {

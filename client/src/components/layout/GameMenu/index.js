@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { advanceTime, saveUser } from '../../../actions/userActions';
-import { removeTodaysCryptos } from '../../../actions/cryptoActions';
+import { advanceTime, saveUser } from '../../../actions/user/userActions';
+import { removeTodaysCryptos } from '../../../actions/crypto/cryptoActions';
 import { connect } from 'react-redux';
-import M from 'materialize-css/dist/js/materialize.min.js';
-import { addEvent, addQuest } from '../../../actions/eventActions';
+import { addEvent, addQuest } from '../../../actions/event/eventActions';
 import NextWeekButton from './NextWeekButton';
 import PropTypes from 'prop-types';
+import M from 'materialize-css/dist/js/materialize.min.js';
 
 export class GameMenu extends Component {
   componentDidMount() {

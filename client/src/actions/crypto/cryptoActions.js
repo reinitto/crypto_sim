@@ -1,4 +1,4 @@
-import { GET_ALL_CRYPTOS, REMOVE_TODAYS_CRYPTOS, SET_ALERT } from './types';
+import { GET_ALL_CRYPTOS, REMOVE_TODAYS_CRYPTOS, SET_ALERT } from '../types';
 
 // Get Contacts
 export const getAllCryptos = time => async dispatch => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { removeQuest, removeEvent } from '../../../actions/eventActions';
+import { removeQuest, removeEvent } from '../../../actions/event/eventActions';
 import EventModalItem from './Item';
 
 export class EventModal extends Component {
