@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import CryptosTable from './CryptosTable';
 import { connect } from 'react-redux';
 import CryptoItem from './CryptoItem';
@@ -10,10 +10,12 @@ import { advanceTime } from '../../actions/user/userActions';
 export class AvailableCryptos extends Component {
   state = {
     time: this.props.time,
-    cryptos: this.props.allCryptos[this.props.time],
     reverse: false,
-    sortBy: 'name'
+    sortBy: 'name',
+    itemsPerPage: 20,
+    page: 0
   };
+
   sortCryptos(sortBy) {
     this.setState({
       sortBy,
@@ -24,26 +26,62 @@ export class AvailableCryptos extends Component {
     this.props.advanceTime();
   }
 
+  showPage = page => {
+    this.setState({
+      page
+    });
+  };
+
   render() {
     let content;
-
+    const { showPage } = this;
+    const { page, itemsPerPage } = this.state;
     if (this.props.allCryptos[this.props.time]) {
-      let newContent = [...this.props.allCryptos[this.props.time]];
+      const cryptos = this.props.allCryptos[this.props.time];
+      const pagination = Array.from(
+        new Array(Math.ceil(cryptos.length / itemsPerPage)),
+        function(val, i) {
+          return (
+            <button
+              style={
+                i === page
+                  ? { backgroundColor: '#2ab7a9' }
+                  : { backgroundColor: 'buttonface' }
+              }
+              onClick={() => showPage(i)}
+              key={i}
+            >
+              {i + 1}{' '}
+            </button>
+          );
+        }
+      );
+
       let sortedContent = sortCryptos(
         this.state.sortBy,
-        newContent,
+        cryptos,
         this.state.reverse
       );
-      content = sortedContent.map(i => <CryptoItem key={i.name} item={i} />);
+
+      let itemsToDisplay = [...sortedContent].slice(
+        page * itemsPerPage,
+        (page + 1) * itemsPerPage
+      );
+
+      content = itemsToDisplay.map(i => <CryptoItem key={i.name} item={i} />);
       if (content && content.length > 0) {
         // allCryptos[date] has items
         return (
-          <CryptosTable
-            data-test='component-available-cryptos'
-            sortCryptos={this.sortCryptos.bind(this)}
-          >
-            {content}
-          </CryptosTable>
+          <Fragment>
+            {pagination}
+            <CryptosTable
+              data-test='component-available-cryptos'
+              sortCryptos={this.sortCryptos.bind(this)}
+              showPage={this.showPage.bind(this)}
+            >
+              {content}
+            </CryptosTable>
+          </Fragment>
         );
       } else {
         // allCryptos[date] is empty

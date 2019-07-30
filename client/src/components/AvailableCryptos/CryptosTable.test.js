@@ -5,7 +5,8 @@ import { CryptosTable } from './CryptosTable';
 import { CryptoItem } from './CryptoItem';
 
 const defaultProps = {
-  sortCryptos: jest.fn()
+  sortCryptos: jest.fn(),
+  showPage: jest.fn()
 };
 /**
  * Factory function to create ShallowWrapper for CryptosTable Component
@@ -27,7 +28,7 @@ describe('renders correctly', () => {
     );
     expect(CryptosTableComponent.length).toBe(1);
   });
-  test('renders all items ', () => {
+  test('renders items ', () => {
     let items = [
       { name: 'btc', open: 11, close: 22, high: 33, low: 1 },
       { name: 'ltc', open: 11, close: 22, high: 33, low: 1 }
@@ -43,7 +44,8 @@ describe('renders correctly', () => {
 });
 describe('sorting table', () => {
   const mock = jest.fn();
-  const wrapper = setup({ sortCryptos: mock });
+  const showPageMock = jest.fn();
+  const wrapper = setup({ sortCryptos: mock, showPage: showPageMock });
   const sort_by_name = findByTestAttr(wrapper, 'button-sort-by-name');
   const sort_by_change = findByTestAttr(wrapper, 'button-sort-by-change');
   const sort_by_close = findByTestAttr(wrapper, 'button-sort-by-price');
@@ -51,12 +53,24 @@ describe('sorting table', () => {
     sort_by_name.simulate('click');
     expect(mock).toHaveBeenCalledWith('name');
   });
+  test('clicking on name calls showPage function', () => {
+    sort_by_name.simulate('click');
+    expect(showPageMock).toHaveBeenCalled();
+  });
   test('clicking on change calls sortCryptos function with "change" as arg', () => {
     sort_by_change.simulate('click');
     expect(mock).toHaveBeenCalledWith('change');
   });
+  test('clicking on change calls showPage function', () => {
+    sort_by_name.simulate('click');
+    expect(showPageMock).toHaveBeenCalled();
+  });
   test('clicking on price calls sortCryptos function with "price" as arg', () => {
     sort_by_close.simulate('click');
     expect(mock).toHaveBeenCalledWith('price');
+  });
+  test('clicking on price calls showPage function', () => {
+    sort_by_name.simulate('click');
+    expect(showPageMock).toHaveBeenCalled();
   });
 });

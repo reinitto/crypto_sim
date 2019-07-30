@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export const CryptosTable = ({ children, sortCryptos }) => {
-  //TODO: add pagination
-  //display only 20 items at a time
-  let itemsToDisplay = (children.length = 20);
-
+export const CryptosTable = ({ children, sortCryptos, showPage }) => {
+  const sort = sortBy => {
+    sortCryptos(sortBy);
+    showPage(0);
+  };
   return (
     <table data-test='component-cryptos-table' className='centered'>
       <thead>
@@ -15,7 +15,7 @@ export const CryptosTable = ({ children, sortCryptos }) => {
               style={{ display: 'block' }}
               data-test='button-sort-by-name'
               href='#!'
-              onClick={() => sortCryptos('name')}
+              onClick={() => sort('name')}
             >
               <span>Name</span>
               <small className='left valign-wrapper'>
@@ -28,7 +28,7 @@ export const CryptosTable = ({ children, sortCryptos }) => {
               data-test='button-sort-by-change'
               style={{ display: 'block' }}
               href='#!'
-              onClick={() => sortCryptos('change')}
+              onClick={() => sort('change')}
             >
               <span>Change</span>
               <small className='left valign-wrapper'>
@@ -41,7 +41,7 @@ export const CryptosTable = ({ children, sortCryptos }) => {
               data-test='button-sort-by-price'
               style={{ display: 'block' }}
               href='#!'
-              onClick={() => sortCryptos('price')}
+              onClick={() => sort('price')}
             >
               <span>Price</span>
               <small className='left valign-wrapper'>
@@ -61,6 +61,7 @@ export const CryptosTable = ({ children, sortCryptos }) => {
 
 CryptosTable.propTypes = {
   sortCryptos: PropTypes.func.isRequired,
+  showPage: PropTypes.func.isRequired,
   children: PropTypes.array
 };
 
